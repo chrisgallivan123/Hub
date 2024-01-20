@@ -13,12 +13,13 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Extract Jira IDs
-      id: jira_ids
+    - name: Extract and Print Jira IDs
       run: |
-        echo "Extracting Jira IDs from commit messages..."
+        echo "Commit messages:"
+        git log --pretty=format:%s origin/main...HEAD
+        echo "Extracted Jira IDs:"
         JIRA_IDS=$(git log --pretty=format:%s origin/main...HEAD | grep -oE '[A-Z]+-[0-9]+' | sort -u | tr '\n' ',')
-        echo "JIRA_IDS=$JIRA_IDS" >> $GITHUB_ENV
+        echo $JIRA_IDS
 
     - name: Deployment Step
       run: |
