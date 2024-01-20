@@ -17,4 +17,29 @@ jobs:
       run: |
         echo "Deploying the application..."
         # Add your deployment commands here
-        # For example, a script to deploy to a server
+
+    - name: Create GitHub Deployment
+      id: create_deployment
+      uses: chrnorm/deployment-action@releases/v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        environment: 'production' # Change to your target environment
+        ref: ${{ github.ref }}
+
+    - name: Update Deployment Status (in progress)
+      if: always()
+      uses: chrnorm/deployment-status@releases/v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        deployment_id: ${{ steps.create_deployment.outputs.deployment_id }}
+        state: 'in_progress'
+
+    # Place any steps here that you want to run as part of your deployment
+
+    - name: Update Deployment Status (success or failure)
+      if: always()
+      uses: chrnorm/deployment-status@releases/v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        deployment_id: ${{ steps.create_deployment.outputs.deployment_id }}
+        state: ${{ job.status }}
