@@ -13,13 +13,6 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Extract and Print Jira IDs
-      run: |
-        echo "Commit messages:"
-        git log --pretty=format:%s origin/main...HEAD
-        echo "Extracted Jira IDs:"
-        JIRA_IDS=$(git log --pretty=format:%s origin/main...HEAD | grep -oE '[A-Z]+-[0-9]+' | sort -u | tr '\n' ',')
-        echo $JIRA_IDS
 
     - name: Deployment Step
       run: |
@@ -52,9 +45,4 @@ jobs:
         deployment_id: ${{ steps.create_deployment.outputs.deployment_id }}
         state: ${{ job.status }}
     
-    - name: Call Webhook on Success
-      if: success()
-      run: |
-        curl -X POST -H "Content-Type: application/json" \
-         -d '{"success": true, "message": "Deployment completed successfully.", "jira_ids": "'${{ env.JIRA_IDS }}'"}' \
-         ${{ secrets.HUB_WEBHOOK_URL }}
+   
