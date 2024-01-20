@@ -47,6 +47,5 @@ jobs:
     - name: Call Webhook on Success
       if: success()
       run: |
-        curl -X POST -H "Content-Type: application/json" -d '{"success": true, "message": "Deployment completed successfully."}' https://demo-chrisg.tasktop.net/api/v1/artifacts/payload-from-github-deploy/4367c121-c0fb-4e9a-b613-e4d02fe5b326
-
+        curl -X POST -H "Content-Type: application/json" -d '{"success": true, "message": "Deployment completed successfully."}' ${{ secrets.HUB_WEBHOOK_URL }}
         
