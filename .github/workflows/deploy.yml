@@ -47,9 +47,10 @@ jobs:
     
     - name: Extract and Print Jira IDs
       run: |
-        JIRA_IDS=$(git log --pretty=format:%s origin/main...HEAD | grep -oE '[A-Z]+-[0-9]+' | sort -u | tr '\n' ',')
-        echo "Extracted Jira IDs: $JIRA_IDS"
-        echo "::set-output name=jira_ids::$JIRA_IDS"
+          echo "Commit messages since last divergence:"
+          git log --pretty=format:%s origin/main...HEAD
+          JIRA_IDS=$(git log --pretty=format:%s origin/main...HEAD | grep -oE '[A-Z]+-[0-9]+' | sort -u | tr '\n' ',')
+          echo "Extracted Jira IDs: $JIRA_IDS"
 
     - name: Call Webhook with Jira IDs
       run: |
