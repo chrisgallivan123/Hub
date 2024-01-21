@@ -50,15 +50,16 @@ jobs:
         git log --pretty=oneline -n 5
         
     - name: Extract Jira IDs
+      id: extract_jira_ids
       run: |
-        JIRA_IDS=$(git log -n 10 --pretty=format:%B | grep -oE '[A-Z]+-[0-9]+' | sort -u | paste -sd, -)
+       JIRA_IDS=$(git log -n 10 --pretty=format:%B | grep -oE '[A-Z]+-[0-9]+' | sort -u | tr '\n' ',')
         echo "Extracted Jira IDs: $JIRA_IDS"
+        echo "::set-output name=jira_ids::$JIRA_IDS"
 
     - name: Call Webhook with Jira IDs
       run: |
-        JIRA_IDS="TEST-7"
         curl -X POST -H "Content-Type: application/json" \
-        -d '{"success": true, "message": "Deployment completed successfully.", "jira_ids": "'"$JIRA_IDS"'"}' \
+        -d '{"success": true, "message": "Deployment completed successfully.", "jira_ids": "${{ steps.extract_jira_ids.outputs.jira_ids }}"}' \
         ${{ secrets.HUB_WEBHOOK_URL }}
 
 
