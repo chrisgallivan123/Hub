@@ -56,10 +56,10 @@ jobs:
         echo "Extracted Jira IDs: $JIRA_IDS"
         echo "::set-output name=jira_ids::$JIRA_IDS"
 
-    - name: Call Webhook with Jira IDs
+    - name: Call Webhook with Jira IDs and Timestamp
       run: |
         curl -X POST -H "Content-Type: application/json" \
-        -d '{"success": true, "message": "Deployment completed successfully.", "jira_ids": "${{ steps.extract_jira_ids.outputs.jira_ids }}"}' \
-        ${{ secrets.HUB_WEBHOOK_URL }}
+         -d '{"success": true, "message": "Deployment completed successfully.", "jira_ids": "${{ steps.extract_jira_ids.outputs.jira_ids }}", "timestamp": "'"$DEPLOY_TIMESTAMP"'"}' \
+         ${{ secrets.HUB_WEBHOOK_URL }}
 
 
