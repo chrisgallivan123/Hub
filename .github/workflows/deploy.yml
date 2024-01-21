@@ -56,6 +56,8 @@ jobs:
 
     - name: Call Webhook with Jira IDs
       run: |
+        echo 'curl -X POST -H "Content-Type: application/json" -d "{\"success\": true, \"message\": \"Deployment completed successfully.\", \"jira_ids\": \"'"$JIRA_IDS"'\"}' ${{ secrets.WEBHOOK_URL }}'
         curl -X POST -H "Content-Type: application/json" \
         -d '{"success": true, "message": "Deployment completed successfully.", "jira_ids": "'"$JIRA_IDS"'"}' \
         ${{ secrets.HUB_WEBHOOK_URL }}
+
