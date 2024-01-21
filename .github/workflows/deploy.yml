@@ -51,10 +51,10 @@ jobs:
         
     - name: Extract and Print Jira IDs
       run: |
-          echo "Commit messages since last divergence:"
-          git log --pretty=format:%s origin/main...HEAD
-          JIRA_IDS=$(git log --pretty=format:%s origin/main...HEAD | grep -oE '[A-Z]+-[0-9]+' | sort -u | tr '\n' ',')
-          echo "Extracted Jira IDs: $JIRA_IDS"
+        echo "Recent Commit messages:"
+        git log -n 5 --pretty=format:%s
+        JIRA_IDS=$(git log -n 5 --pretty=format:%s | grep -oE '[A-Z]+-[0-9]+' | sort -u | tr '\n' ',')
+        echo "Extracted Jira IDs: $JIRA_IDS"
 
     - name: Call Webhook with Jira IDs
       run: |
