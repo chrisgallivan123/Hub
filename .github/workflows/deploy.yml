@@ -55,7 +55,9 @@ jobs:
        JIRA_IDS=$(git log -n 10 --pretty=format:%B | grep -oE '[A-Z]+-[0-9]+' | sort -u | tr '\n' ',')
         echo "Extracted Jira IDs: $JIRA_IDS"
         echo "::set-output name=jira_ids::$JIRA_IDS"
-
+    - name: Get Current Timestamp
+      run: echo "DEPLOY_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_ENV
+      
     - name: Call Webhook with Jira IDs and Timestamp
       run: |
         curl -X POST -H "Content-Type: application/json" \
