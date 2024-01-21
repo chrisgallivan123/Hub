@@ -51,9 +51,8 @@ jobs:
         
     - name: Extract and Print Jira IDs
       run: |
-        echo "Recent Commit messages:"
-        git log -n 5 --pretty=format:%s
-        JIRA_IDS=$(git log -n 5 --pretty=format:%s | grep -oE '[A-Z]+-[0-9]+' | sort -u | tr '\n' ',')
+    
+        JIRA_IDS=$(git log -n 5 --pretty=format:%s )
         echo "Extracted Jira IDs: $JIRA_IDS"
 
     - name: Call Webhook with Jira IDs
