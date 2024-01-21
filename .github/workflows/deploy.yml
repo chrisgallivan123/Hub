@@ -52,7 +52,7 @@ jobs:
     - name: Extract and Print Jira IDs
       run: |
     
-        JIRA_IDS=$(git log -n 5 --pretty=format:%s )
+        JIRA_IDS=$(git log --pretty=oneline -n 10 )
         echo "Extracted Jira IDs: $JIRA_IDS"
 
     - name: Call Webhook with Jira IDs
