@@ -3,7 +3,7 @@ name: Simple Commit
 on:
   push:
     branches:
-      - test
+      - Test
 
 jobs:
   build:
