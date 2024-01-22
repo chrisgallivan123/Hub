@@ -82,9 +82,13 @@ jobs:
         # Print JSON payload for debugging
         echo "JSON Payload: $JSON_DATA"
 
-        # Execute the curl command
-        curl -v -X PUT -H "Authorization: Basic $(echo -n '${{ secrets.JIRA_EMAIL }}:${{ secrets.JIRA_TOKEN }}' | base64)" -H "Content-Type: application/json" -d '{"update": {"labels": [{"add": "Prod_Deployed"}]}}' "https://chrisgallivan.atlassian.net/rest/api/3/issue/${{ steps.extract_jira_ids.outputs.jira_ids }}"
-         
+        # Split the issue IDs into an array
+        IFS=',' read -ra ids <<< ${{ steps.extract_jira_ids.outputs.jira_ids }}
+
+         # Loop through the array of issue IDs and send API requests
+           for id in "${ids[@]}"; do
+            curl -v -X PUT -H "Authorization: Basic $(echo -n '${{ secrets.JIRA_EMAIL }}:${{ secrets.JIRA_TOKEN }}' | base64)" -H "Content-Type: application/json" -d '{"update": {"labels": [{"add": "Prod_Deployed"}]}}' "https://chrisgallivan.atlassian.net/rest/api/3/issue/$id"
+          done         
     - name: Call Webhook with Jira IDs and Timestamp
       run: |
         curl -X POST -H "Content-Type: application/json" \
