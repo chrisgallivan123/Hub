@@ -59,9 +59,9 @@ jobs:
       run: echo "DEPLOY_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_ENV
     - name: Add Label to Jira Issue
       run: |
-        JIRA_ISSUE_KEY=$${{ steps.extract_jira_ids.outputs.jira_ids }}
+        JIRA_ISSUE_KEY=${{ steps.extract_jira_ids.outputs.jira_ids }}
         curl --request PUT \
-         --url 'https://https://chrisgallivan.atlassian.net/rest/api/3/issue/$JIRA_ISSUE_KEY' \
+         --url 'https://chrisgallivan.atlassian.net/rest/api/3/issue/$JIRA_ISSUE_KEY' \
          --header 'Authorization: Bearer ${{ secrets.JIRA_TOKEN }}' \
          --header 'Content-Type: application/json' \
          --data '{"update": {"labels": [{"add": "Deployed_to_Prod"}]}}'
