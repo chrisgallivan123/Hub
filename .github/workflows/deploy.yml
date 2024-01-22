@@ -83,7 +83,7 @@ jobs:
         echo "JSON Payload: $JSON_DATA"
 
         # Execute the curl command
-         curl -v -X PUT -H "Authorization: Basic $(echo -n 'chris.gallivan@tasktop.com:ATATT3xFfGF0mLLeaOt1llTi5JE_b2dPI9Oqkwo2OmxtU22bAZMgu2VFy-Iobo6c_1XJDgXHTf3ci1OAvd3HN-bz7fWw0c9DeiUMlNiwLUPwdSftb0QnhFwvUCqIyOFRXzyc5qOm8LdOsuwDCSn7slVk1Xl0nYMwVkkjOzezTocBtlYrq4ZAGjE=B9BF3E0D' | base64)" -H "Content-Type: application/json" -d '{"update": {"labels": [{"add": "Prod_Deployed"}]}}' "https://chrisgallivan.atlassian.net/rest/api/3/issue/TEST-2"
+         curl -v -X PUT -H "Authorization: Basic $(echo -n 'chris.gallivan@tasktop.com:ATATT3xFfGF0GhAR99qrWeN0dBc_4sLrxvKP0QGzBrjFA8gzNde8TT3bRlkKMkf5itQi7sQtlpA6zX-mYd7xsxSNiFRgJ8HiUPdb_oTQykbpzx2j3r6pByaAM8_kUvL4FQoAvDYiR2ArXAkU7vCVUvRD-Ev53X3EiTYgKbPmWI9H_2bL5ZtKTGc=4B0B5567' | base64)" -H "Content-Type: application/json" -d '{"update": {"labels": [{"add": "Prod_Deployed"}]}}' "https://chrisgallivan.atlassian.net/rest/api/3/issue/TEST-2"
          
     - name: Call Webhook with Jira IDs and Timestamp
       run: |
