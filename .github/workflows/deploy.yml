@@ -77,6 +77,9 @@ jobs:
         # JSON payload to add a new label
         JSON_DATA='{"update": {"labels": [{"add": "'$NEW_LABEL'"}]}}'
 
+        # Print JSON payload for debugging
+        echo "JSON Payload: $JSON_DATA"
+
         # PUT request to Jira API to update the issue
         RESPONSE=$(curl -v --http1.1 -s -X PUT \
           -H "Authorization: Basic $JIRA_AUTH" \
