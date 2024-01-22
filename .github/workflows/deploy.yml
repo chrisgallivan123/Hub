@@ -80,15 +80,16 @@ jobs:
         # Print JSON payload for debugging
         echo "JSON Payload: $JSON_DATA"
 
-        # PUT request to Jira API to update the issue
-        RESPONSE=$(curl -v --http1.1 -s -X PUT \
-          -H "Authorization: Basic $JIRA_AUTH" \
-          -H "Content-Type: application/json" \
-          -d "$JSON_DATA" \
-          "$JIRA_API_ENDPOINT")
+        # Prepare the curl command
+        CURL_COMMAND="curl -v --http1.1 -X PUT -H \"Authorization: Basic $JIRA_AUTH\" -H \"Content-Type: application/json\" -d '$JSON_DATA' \"https://$JIRA_DOMAIN/rest/api/3/issue/$JIRA_ISSUE_KEY\""
 
+        # Print the curl command
+        echo "Curl Command:"
+        echo "$CURL_COMMAND"
+
+        # Execute the curl command
+        RESPONSE=$($CURL_COMMAND)
         echo "Response: $RESPONSE"
-
       
     - name: Call Webhook with Jira IDs and Timestamp
       run: |
