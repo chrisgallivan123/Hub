@@ -64,12 +64,14 @@ jobs:
         JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
       run: |
         # Assuming JIRA_ISSUE_KEY is already set, e.g., "TEST-123"
-        JIRA_ISSUE_KEY="TEST-6"
+        JIRA_ISSUE_KEY="TEST-5"
         JIRA_DOMAIN="chrisgallivan.atlassian.net" # Replace with your Jira domain
         NEW_LABEL="Prod_Deployed" # Replace with the label you want to add
 
         # Basic Authentication
         JIRA_AUTH=$(echo -n "$JIRA_EMAIL:$JIRA_TOKEN" | base64)
+        # Print JIRA AUTH for debugging
+        echo "JIRA AUTH: $JIRA_AUTH"
 
         # Jira API Endpoint to update an issue
         JIRA_API_ENDPOINT="https://$JIRA_DOMAIN/rest/api/3/issue/$JIRA_ISSUE_KEY"
