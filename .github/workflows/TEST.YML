@@ -1,0 +1,46 @@
+name: Simple Commit
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  build:
+    runs-on: macos-latest # Use the latest macOS runner
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Fetches all history for all branches and tags
+
+    - name: Build Step
+      run: |
+        echo "Building the application..."
+        # Add your build commands here
+     
+    - name: Extract Jira IDs
+      id: extract_jira_ids
+      run: |
+       JIRA_IDS=$(git log -n 10 --pretty=format:%B | grep -oE '[A-Z]+-[0-9]+' | sort -u | tr '\n' ',')
+        echo "Extracted Jira IDs: $JIRA_IDS"
+        echo "::set-output name=jira_ids::$JIRA_IDS"
+    - name: Get Current Timestamp
+      run: echo "COMMIT_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_ENV
+
+    - name: Update Jira Issue Label
+      env:
+        JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+        JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
+      run: |
+       
+        
+       
+        # Split the issue IDs into an array
+        IFS=',' read -ra ids <<< ${{ steps.extract_jira_ids.outputs.jira_ids }}
+
+         # Loop through the array of issue IDs and send API requests
+           for id in "${ids[@]}"; do
+            curl -v -X PUT -H "Authorization: Basic $(echo -n '${{ secrets.JIRA_EMAIL }}:${{ secrets.JIRA_TOKEN }}' | base64)" -H "Content-Type: application/json" -d '{"update": {"labels": [{"add": "Code_Committed"}]}}' "https://chrisgallivan.atlassian.net/rest/api/3/issue/$id"
+          done   
