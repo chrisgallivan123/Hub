@@ -64,11 +64,11 @@ jobs:
         JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
       run: |
         # Assuming JIRA_ISSUE_KEY is already set, e.g., "TEST-123"
-        JIRA_ISSUE_KEY="TEST-7"
+        JIRA_ISSUE_KEY="TEST-6"
         JIRA_DOMAIN="chrisgallivan.atlassian.net" # Replace with your Jira domain
         NEW_LABEL="Prod_Deployed" # Replace with the label you want to add
 
-         # Basic Authentication
+        # Basic Authentication
         JIRA_AUTH=$(echo -n "$JIRA_EMAIL:$JIRA_TOKEN" | base64)
 
         # Jira API Endpoint to update an issue
@@ -81,7 +81,7 @@ jobs:
         echo "JSON Payload: $JSON_DATA"
 
         # Prepare the curl command
-        CURL_COMMAND="curl -v --http1.1 -X PUT -H \"Authorization: Basic $JIRA_AUTH\" -H \"Content-Type: application/json\" -d '$JSON_DATA' \"https://$JIRA_DOMAIN/rest/api/3/issue/$JIRA_ISSUE_KEY\""
+        CURL_COMMAND="curl -v -X PUT -H \"Authorization: Basic $JIRA_AUTH\" -H \"Content-Type: application/json\" -d '$JSON_DATA' \"$JIRA_API_ENDPOINT\""
 
         # Print the curl command
         echo "Curl Command:"
@@ -90,6 +90,7 @@ jobs:
         # Execute the curl command
         RESPONSE=$($CURL_COMMAND)
         echo "Response: $RESPONSE"
+
       
     - name: Call Webhook with Jira IDs and Timestamp
       run: |
