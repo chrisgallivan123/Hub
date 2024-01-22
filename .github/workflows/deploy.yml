@@ -75,7 +75,7 @@ jobs:
         JSON_DATA='{"update": {"labels": [{"add": "'$NEW_LABEL'"}]}}'
 
         # PUT request to Jira API to update the issue
-        RESPONSE=$(curl -s -X PUT \
+        RESPONSE=$(curl -v -s -X PUT \
           -H "Authorization: Basic $JIRA_AUTH" \
           -H "Content-Type: application/json" \
           -d "$JSON_DATA" \
