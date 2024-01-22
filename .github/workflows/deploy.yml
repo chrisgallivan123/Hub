@@ -59,14 +59,17 @@ jobs:
       run: echo "DEPLOY_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_ENV
 
     - name: Update Jira Issue Label
+      env:
+        JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+        JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
       run: |
         # Assuming JIRA_ISSUE_KEY is already set, e.g., "TEST-123"
         JIRA_ISSUE_KEY="TEST-7"
         JIRA_DOMAIN="chrisgallivan.atlassian.net" # Replace with your Jira domain
         NEW_LABEL="Prod_Deployed" # Replace with the label you want to add
 
-        # Basic Authentication
-        JIRA_AUTH=$(echo -n ${{ secrets.JIRA_EMAIL }}:${{ secrets.JIRA_TOKEN }} | base64)
+         # Basic Authentication
+        JIRA_AUTH=$(echo -n "$JIRA_EMAIL:$JIRA_TOKEN" | base64)
 
         # Jira API Endpoint to update an issue
         JIRA_API_ENDPOINT="https://$JIRA_DOMAIN/rest/api/3/issue/$JIRA_ISSUE_KEY"
