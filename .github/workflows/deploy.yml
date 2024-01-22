@@ -81,17 +81,15 @@ jobs:
         echo "JSON Payload: $JSON_DATA"
 
         # Prepare the curl command
-        CURL_COMMAND="curl -v -X PUT -H "Authorization: Basic $(echo -n "chris.gallivan@tasktop.com:ATATT3xFfGF00PEfzL-2HJ1W-jFUwQWuX-48hnK1RxHMwC3lT7P7jCWfTu-xVuYQtCM2gdJcI4Mt-g11m1znTcnXPDDzu3pwLSBzXAILHI9nL8i_KDLKw8TCo3-MVbCItbxyiBQ-fdWWjJBLaIHwvYbwwrBjGNR5a-BAi9c8nDFbnNLSpTD1HuI=13278629" | base64)" -H "Content-Type: application/json" -d '{
-        "update": {
-        "labels": [{"add": "Prod_Deployed"}]
-        }
-        }' "https://chrisgallivan.atlassian.net/rest/api/3/issue/TEST-6""
+        CURL_COMMAND="curl -v -X PUT -H \"Authorization: Basic $JIRA_AUTH\" -H \"Content-Type: application/json\" -d {"update": {"labels": [{"add": "Prod_Deployed"}]}}' \"$JIRA_API_ENDPOINT\""
 
-       
+        # Print the curl command
+          echo "Curl Command:"
+          echo "$CURL_COMMAND"
+
         # Execute the curl command
-        RESPONSE=$($CURL_COMMAND)
-        echo "Response: $RESPONSE"
-
+          RESPONSE=$($CURL_COMMAND)
+          echo "Response: $RESPONSE"
       
     - name: Call Webhook with Jira IDs and Timestamp
       run: |
