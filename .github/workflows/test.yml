@@ -43,5 +43,4 @@ jobs:
          # Loop through the array of issue IDs and send API requests
            for id in "${ids[@]}"; do
             curl -v -X PUT -H "Authorization: Basic $(echo -n '${{ secrets.JIRA_EMAIL }}:${{ secrets.JIRA_TOKEN }}' | base64)" -H "Content-Type: application/json" -d '{"update": {"labels": [{"add": "Code_Committed"}]}}' "https://chrisgallivan.atlassian.net/rest/api/3/issue/$id"
-          done         
-   
+          done   
